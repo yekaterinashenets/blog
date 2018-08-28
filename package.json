@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --mode development --open --hot",
     "build": "webpack",
-    "serve": "http-server ./dist"
+    "serve": "http-server ./dist",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -25,9 +26,13 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^1.0.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-react": "^7.11.1",
     "html-webpack-plugin": "^3.2.0",
     "http-server": "^0.11.1",
     "node-sass": "^4.9.3",
+    "prettier": "^1.14.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "sass-loader": "^7.1.0",
@@ -42,6 +47,9 @@
     "@babel/preset-react": "^7.0.0",
     "babel-core": "^6.26.3",
     "babel-preset-es2015": "^6.24.1",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "gulp-babel": "^7.0.1"
   }
 }
