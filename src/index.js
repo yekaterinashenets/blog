@@ -6,6 +6,10 @@ import store from './store';
 
 const rootEl = document.getElementById('root');
 
+window.addEventListener('onbeforeunload', () => alert(124));
+
+// store.subscribe(() => console.log(store.getState()));
+
 render(
   <Provider store={store}>
     <App />
