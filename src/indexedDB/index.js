@@ -58,7 +58,7 @@ export const get = id =>
         .transaction([storeName], 'readonly')
         .objectStore(storeName)
         .get(id);
-      request.onerror = logerr;
+      request.onerror = logErr;
       request.onsuccess = () => {
         resolve(request.result);
       };
@@ -86,7 +86,7 @@ export const remove = id =>
         .transaction([storeName], 'readwrite')
         .objectStore(storeName)
         .delete(id);
-      request.onerror = logerr;
+      request.onerror = logErr;
       request.onsuccess = () => {
         resolve(request.result);
       };

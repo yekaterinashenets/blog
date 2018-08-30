@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import CreatingForm from './components/CreatingForm';
-import { addPost, getAllPosts } from '../../actions';
+import { CreateForm } from '../../components/Form/CustomForm';
+import Posts from './components/Posts';
+
+import { addPost, removePost, editPost, getAllPosts } from '../../actions';
 const uuidv1 = require('uuid/v1');
 import './styles.scss';
 
@@ -16,10 +18,14 @@ class Overview extends Component {
     });
   };
   render() {
-    console.log(this.props.posts);
     return (
       <div className="overview">
-        <CreatingForm addPost={this.addPost} />
+        <CreateForm submitCallback={this.addPost} />
+        <Posts
+          posts={this.props.posts}
+          removePost={this.props.removePost}
+          editPost={this.props.editPost}
+        />
       </div>
     );
   }
@@ -31,7 +37,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addPost: post => dispatch(addPost(post)),
-  getAllPosts: () => dispatch(getAllPosts())
+  getAllPosts: () => dispatch(getAllPosts()),
+  removePost: id => dispatch(removePost(id)),
+  editPost: post => dispatch(editPost(post))
 });
 
 export default connect(

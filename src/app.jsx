@@ -9,11 +9,13 @@ const history = createBrowserHistory();
 class App extends Component {
   render() {
     return (
-      <Router history={history}>
-        <Switch>
-          <Route exact path="/" component={Overview} />
-        </Switch>
-      </Router>
+      <React.StrictMode>
+        <Router history={history}>
+          <Switch>
+            <Route exact path="/" component={Overview} />
+          </Switch>
+        </Router>
+      </React.StrictMode>
     );
   }
 }
