@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import PostModel from '../../../common/models/PostModel';
+import IsPendingModel from '../../../common/models/IsPendingModel';
 import './styles.scss';
-import { EditForm } from '../../../components/Form/CustomForm';
+import { EditForm } from '../../../common/components/Form/CustomForm';
 
 class Post extends Component {
   constructor(props) {
@@ -10,19 +12,37 @@ class Post extends Component {
       isEditMode: false
     };
   }
+
   remove = () => this.props.removePost(this.props.post.id);
+
+  static getDerivedStateFromProps(props, state) {
+    return props.isFormRequestPending &&
+      props.isFormRequestPending.isPending &&
+      props.isFormRequestPending.id === props.post.id
+      ? {
+          isEditMode: false
+        }
+      : state;
+  }
+
   edit = () =>
     this.setState({
       isEditMode: true
     });
+
   editPost = post => {
-    this.setState({
-      isEditMode: false
-    });
     this.props.editPost(post);
   };
+
   render() {
-    const { title, text, email } = this.props.post;
+    const { post, isFormRequestPending, isRemoveRequestPending } = this.props;
+    const { title, text, email, id } = post;
+    const AreButtonsDisabled =
+      isRemoveRequestPending && isRemoveRequestPending.id === id;
+    const isLoaderVisible =
+      isFormRequestPending &&
+      isFormRequestPending.isPending &&
+      isFormRequestPending.id === id;
     return (
       <div className="post">
         {!this.state.isEditMode ? (
@@ -30,24 +50,30 @@ class Post extends Component {
             <p>{title}</p>
             <p>{text}</p>
             <p>by {email}</p>
-            <button onClick={this.remove}>remove</button>
-            <button onClick={this.edit}>edit</button>
+            <button onClick={this.remove} disabled={AreButtonsDisabled}>
+              remove
+            </button>
+            <button onClick={this.edit} disabled={AreButtonsDisabled}>
+              edit
+            </button>
           </>
         ) : (
           <EditForm
-            initialData={this.props.post}
-            form={this.props.post.id}
+            initialData={post}
+            form={id}
             submitCallback={this.editPost}
           />
         )}
+        {isLoaderVisible && <span>Loading...</span>}
       </div>
     );
   }
 }
 
 Post.propTypes = {
-  post: PropTypes.object.isRequired,
-  removePost: PropTypes.func.isRequired
+  post: PostModel,
+  removePost: PropTypes.func.isRequired,
+  isRemoveRequestPending: IsPendingModel
 };
 
 export default Post;

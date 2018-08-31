@@ -1,30 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { CreateForm } from '../../components/Form/CustomForm';
+import { CreateForm } from '../../common/components/Form/CustomForm';
 import Posts from './components/Posts';
 
-import { addPost, removePost, editPost, getAllPosts } from '../../actions';
-const uuidv1 = require('uuid/v1');
+import {
+  sendRequestToAddPost,
+  sendRequestToRemovePost,
+  sendRequestToEditPost,
+  sendRequestToGetAllPosts
+} from '../../actions';
 import './styles.scss';
 
 class Overview extends Component {
   componentDidMount() {
     this.props.getAllPosts();
   }
-  addPost = post => {
-    this.props.addPost({
-      ...post,
-      id: uuidv1()
-    });
-  };
+
   render() {
     return (
       <div className="overview">
-        <CreateForm submitCallback={this.addPost} />
+        <CreateForm
+          submitCallback={this.props.addPost}
+          isFormRequestPending={this.props.isFormRequestPending}
+        />
         <Posts
           posts={this.props.posts}
           removePost={this.props.removePost}
           editPost={this.props.editPost}
+          isRemoveRequestPending={this.props.isRemoveRequestPending}
+          isFormRequestPending={this.props.isFormRequestPending}
         />
       </div>
     );
@@ -32,15 +36,18 @@ class Overview extends Component {
 }
 
 const mapStateToProps = state => ({
-  posts: state.posts.posts
+  posts: state.posts.posts,
+  isFormRequestPending: state.posts.isFormRequestPending,
+  isRemoveRequestPending: state.posts.isRemoveRequestPending,
+  isFormRequestPending: state.posts.isFormRequestPending
 });
 
-const mapDispatchToProps = dispatch => ({
-  addPost: post => dispatch(addPost(post)),
-  getAllPosts: () => dispatch(getAllPosts()),
-  removePost: id => dispatch(removePost(id)),
-  editPost: post => dispatch(editPost(post))
-});
+const mapDispatchToProps = {
+  addPost: sendRequestToAddPost,
+  getAllPosts: sendRequestToGetAllPosts,
+  removePost: sendRequestToRemovePost,
+  editPost: sendRequestToEditPost
+};
 
 export default connect(
   mapStateToProps,

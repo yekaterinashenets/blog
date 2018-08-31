@@ -1,24 +1,43 @@
+import { actionTypes } from '../common/constants/actionTypes';
+
 const initialState = {
-  posts: []
+  posts: [],
+  isFormRequestPending: null,
+  isRemoveRequestPending: null
 };
+
 const posts = (state = initialState, action) => {
   switch (action.type) {
-    case 'SAVE_POSTS':
+    case actionTypes.SAVE_POSTS:
       return { ...state, posts: action.payload };
-    case 'ADD_POST':
+
+    case actionTypes.SAVE_POST:
       return { ...state, posts: [...state.posts, action.payload] };
-    case 'REMOVE_POST':
+
+    case actionTypes.REMOVE_POST:
       return {
         ...state,
         posts: state.posts.filter(post => post.id != action.payload)
       };
-    case 'EDIT_POST':
+
+    case actionTypes.EDIT_POST:
       return {
         ...state,
         posts: state.posts.map(
           post => (post.id === action.payload.id ? action.payload : post)
         )
       };
+    case actionTypes.IS_FORM_REQUEST_PENDING:
+      return {
+        ...state,
+        isFormRequestPending: action.payload
+      };
+    case actionTypes.IS_REMOVE_REQUEST_PENDING:
+      return {
+        ...state,
+        isRemoveRequestPending: action.payload
+      };
+
     default:
       return state;
   }
