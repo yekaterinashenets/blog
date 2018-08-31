@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Field } from 'redux-form';
 import PropTypes from 'prop-types';
+import PostModel from '../../models/PostModel';
+import IsPendingModel from '../../models/IsPendingModel';
 
 const renderField = ({
   input,
@@ -24,8 +26,15 @@ class Form extends Component {
     const { initialData, initialize } = this.props;
     initialData && initialize(initialData);
   }
+
   render() {
-    const { handleSubmit, submitCallback } = this.props;
+    const { handleSubmit, submitCallback, isFormRequestPending } = this.props;
+    const buttontext =
+      isFormRequestPending &&
+      isFormRequestPending.isPending &&
+      !isFormRequestPending.id
+        ? 'Loading...'
+        : 'Submit';
     return (
       <form onSubmit={handleSubmit(submitCallback)}>
         <div>
@@ -40,7 +49,7 @@ class Form extends Component {
           <label htmlFor="email">Author's email</label>
           <Field name="email" component={renderField} type="email" />
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit">{buttontext}</button>
       </form>
     );
   }
@@ -48,7 +57,8 @@ class Form extends Component {
 
 Form.propTypes = {
   submit: PropTypes.func.isRequired,
-  initialData: PropTypes.object
+  initialData: PostModel,
+  isFormRequestPending: IsPendingModel
 };
 
 export default Form;

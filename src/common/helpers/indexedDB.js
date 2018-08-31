@@ -11,7 +11,9 @@ const logErr = err => console.log(err);
 
 const connectDB = callback => {
   const request = idb.open(dbName, 1);
-  request.onerror = logErr;
+  request.onerror = () => {
+    reject('Something went wrong');
+  };
   request.onsuccess = () => {
     callback(request.result);
   };
@@ -24,27 +26,32 @@ const connectDB = callback => {
 };
 
 export const add = post =>
-  new Promise(resolve =>
+  new Promise((resolve, reject) =>
     connectDB(db => {
       const request = db
         .transaction([storeName], 'readwrite')
         .objectStore(storeName)
         .add(post);
-      request.onerror = logErr;
+      request.onerror = () => {
+        reject('Something went wrong');
+      };
       request.onsuccess = () => {
+        console.log(request.result);
         resolve(request.result);
       };
     })
   );
 
 export const update = post =>
-  new Promise(resolve =>
+  new Promise((resolve, reject) =>
     connectDB(db => {
       const request = db
         .transaction([storeName], 'readwrite')
         .objectStore(storeName)
         .put(post);
-      request.onerror = logErr;
+      request.onerror = () => {
+        reject('Something went wrong');
+      };
       request.onsuccess = () => {
         resolve(request.result);
       };
@@ -52,13 +59,15 @@ export const update = post =>
   );
 
 export const get = id =>
-  new Promise(resolve =>
+  new Promise((resolve, reject) =>
     connectDB(db => {
       const request = db
         .transaction([storeName], 'readonly')
         .objectStore(storeName)
         .get(id);
-      request.onerror = logErr;
+      request.onerror = () => {
+        reject('Something went wrong');
+      };
       request.onsuccess = () => {
         resolve(request.result);
       };
@@ -66,13 +75,15 @@ export const get = id =>
   );
 
 export const getAll = () =>
-  new Promise(resolve =>
+  new Promise((resolve, reject) =>
     connectDB(db => {
       const request = db
         .transaction([storeName], 'readonly')
         .objectStore(storeName)
         .getAll();
-      request.onerror = logErr;
+      request.onerror = () => {
+        reject('Something went wrong');
+      };
       request.onsuccess = () => {
         resolve(request.result);
       };
@@ -80,13 +91,15 @@ export const getAll = () =>
   );
 
 export const remove = id =>
-  new Promise(resolve =>
+  new Promise((resolve, reject) =>
     connectDB(db => {
       const request = db
         .transaction([storeName], 'readwrite')
         .objectStore(storeName)
         .delete(id);
-      request.onerror = logErr;
+      request.onerror = () => {
+        reject('Something went wrong');
+      };
       request.onsuccess = () => {
         resolve(request.result);
       };
