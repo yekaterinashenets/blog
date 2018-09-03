@@ -28,11 +28,9 @@ class Form extends Component {
   }
 
   render() {
-    const { handleSubmit, submitCallback, isFormRequestPending } = this.props;
+    const { handleSubmit, submitCallback, isRequestPending } = this.props;
     const buttontext =
-      isFormRequestPending &&
-      isFormRequestPending.isPending &&
-      !isFormRequestPending.id
+      isRequestPending && isRequestPending.isPending && !isRequestPending.id
         ? 'Loading...'
         : 'Submit';
     return (
@@ -58,7 +56,7 @@ class Form extends Component {
 Form.propTypes = {
   submit: PropTypes.func.isRequired,
   initialData: PostModel,
-  isFormRequestPending: IsPendingModel
+  isRequestPending: IsPendingModel
 };
 
 export default Form;
