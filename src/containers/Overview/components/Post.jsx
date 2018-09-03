@@ -16,9 +16,9 @@ class Post extends Component {
   remove = () => this.props.removePost(this.props.post.id);
 
   static getDerivedStateFromProps(props, state) {
-    return props.isFormRequestPending &&
-      props.isFormRequestPending.isPending &&
-      props.isFormRequestPending.id === props.post.id
+    return props.isRequestPending &&
+      props.isRequestPending.isPending &&
+      props.isRequestPending.id === props.post.id
       ? {
           isEditMode: false
         }
@@ -35,14 +35,12 @@ class Post extends Component {
   };
 
   render() {
-    const { post, isFormRequestPending, isRemoveRequestPending } = this.props;
+    const { post, isRequestPending } = this.props;
     const { title, text, email, id } = post;
-    const AreButtonsDisabled =
-      isRemoveRequestPending && isRemoveRequestPending.id === id;
     const isLoaderVisible =
-      isFormRequestPending &&
-      isFormRequestPending.isPending &&
-      isFormRequestPending.id === id;
+      isRequestPending &&
+      isRequestPending.isPending &&
+      isRequestPending.id === id;
     return (
       <div className="post">
         {!this.state.isEditMode ? (
@@ -50,12 +48,8 @@ class Post extends Component {
             <p>{title}</p>
             <p>{text}</p>
             <p>by {email}</p>
-            <button onClick={this.remove} disabled={AreButtonsDisabled}>
-              remove
-            </button>
-            <button onClick={this.edit} disabled={AreButtonsDisabled}>
-              edit
-            </button>
+            <button onClick={this.remove}>remove</button>
+            <button onClick={this.edit}>edit</button>
           </>
         ) : (
           <EditForm
@@ -73,7 +67,7 @@ class Post extends Component {
 Post.propTypes = {
   post: PostModel,
   removePost: PropTypes.func.isRequired,
-  isRemoveRequestPending: IsPendingModel
+  isRequestPending: IsPendingModel
 };
 
 export default Post;

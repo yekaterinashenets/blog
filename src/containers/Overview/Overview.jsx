@@ -21,14 +21,13 @@ class Overview extends Component {
       <div className="overview">
         <CreateForm
           submitCallback={this.props.addPost}
-          isFormRequestPending={this.props.isFormRequestPending}
+          isRequestPending={this.props.isRequestPending}
         />
         <Posts
           posts={this.props.posts}
           removePost={this.props.removePost}
           editPost={this.props.editPost}
-          isRemoveRequestPending={this.props.isRemoveRequestPending}
-          isFormRequestPending={this.props.isFormRequestPending}
+          isRequestPending={this.props.isRequestPending}
         />
       </div>
     );
@@ -37,9 +36,7 @@ class Overview extends Component {
 
 const mapStateToProps = state => ({
   posts: state.posts.posts,
-  isFormRequestPending: state.posts.isFormRequestPending,
-  isRemoveRequestPending: state.posts.isRemoveRequestPending,
-  isFormRequestPending: state.posts.isFormRequestPending
+  isRequestPending: state.posts.isRequestPending
 });
 
 const mapDispatchToProps = {

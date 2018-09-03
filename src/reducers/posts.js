@@ -2,8 +2,7 @@ import { actionTypes } from '../common/constants/actionTypes';
 
 const initialState = {
   posts: [],
-  isFormRequestPending: null,
-  isRemoveRequestPending: null
+  isRequestPending: null
 };
 
 const posts = (state = initialState, action) => {
@@ -27,15 +26,11 @@ const posts = (state = initialState, action) => {
           post => (post.id === action.payload.id ? action.payload : post)
         )
       };
-    case actionTypes.IS_FORM_REQUEST_PENDING:
+
+    case actionTypes.IS_REQUEST_PENDING:
       return {
         ...state,
-        isFormRequestPending: action.payload
-      };
-    case actionTypes.IS_REMOVE_REQUEST_PENDING:
-      return {
-        ...state,
-        isRemoveRequestPending: action.payload
+        isRequestPending: action.payload
       };
 
     default:
