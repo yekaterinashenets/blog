@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PostModel from '../../../common/models/PostModel';
-import IsPendingModel from '../../../common/models/IsPendingModel';
 import './styles.scss';
 import { EditForm } from '../../../common/components/Form/CustomForm';
+import { Consumer } from '../../../common/contexts/requestContext';
 
 class Post extends Component {
   constructor(props) {
@@ -16,9 +16,7 @@ class Post extends Component {
   remove = () => this.props.removePost(this.props.post.id);
 
   static getDerivedStateFromProps(props, state) {
-    return props.isRequestPending &&
-      props.isRequestPending.isPending &&
-      props.isRequestPending.id === props.post.id
+    return props.isRequestPending && props.postId === props.post.id
       ? {
           isEditMode: false
         }
@@ -35,12 +33,9 @@ class Post extends Component {
   };
 
   render() {
-    const { post, isRequestPending } = this.props;
+    const { post, isRequestPending, postId } = this.props;
     const { title, text, email, id } = post;
-    const isLoaderVisible =
-      isRequestPending &&
-      isRequestPending.isPending &&
-      isRequestPending.id === id;
+    const isLoaderVisible = isRequestPending && postId === id;
     return (
       <div className="post">
         {!this.state.isEditMode ? (
@@ -67,7 +62,14 @@ class Post extends Component {
 Post.propTypes = {
   post: PostModel,
   removePost: PropTypes.func.isRequired,
-  isRequestPending: IsPendingModel
+  isRequestPending: PropTypes.bool,
+  postId: PropTypes.string
 };
 
-export default Post;
+const connectPost = PostComponent => props => (
+  <Consumer>
+    {requestData => <PostComponent {...props} {...requestData} />}
+  </Consumer>
+);
+
+export default connectPost(Post);

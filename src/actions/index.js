@@ -3,28 +3,44 @@ import { actionTypes } from '../common/constants/actionTypes';
 const uuidv1 = require('uuid/v1');
 
 export const sendRequestToAddPost = post => async dispatch => {
-  dispatch(isRequestPending(true));
-  post = {
-    ...post,
-    id: uuidv1()
-  };
-  await add(post);
-  dispatch(savePost(post));
-  dispatch(isRequestPending(null));
+  try {
+    dispatch(changeRequestStateAccordingType(actionTypes.ADD_POST_REQUEST));
+    post = {
+      ...post,
+      id: uuidv1()
+    };
+    await add(post);
+    dispatch(savePost(post));
+    dispatch(changeRequestStateAccordingType(actionTypes.ADD_POST_SUCCESS));
+  } catch (error) {
+    dispatch(changeRequestStateAccordingType(actionTypes.ADD_POST_FAILURE));
+  }
 };
 
 export const sendRequestToRemovePost = id => async dispatch => {
-  dispatch(isRequestPending(true, id));
-  await remove(id);
-  dispatch(removePost(id));
-  dispatch(isRequestPending(null));
+  try {
+    dispatch(
+      changeRequestStateAccordingType(actionTypes.REMOVE_POST_REQUEST, id)
+    );
+    await remove(id);
+    dispatch(removePost(id));
+    dispatch(changeRequestStateAccordingType(actionTypes.REMOVE_POST_SUCCESS));
+  } catch (error) {
+    dispatch(changeRequestStateAccordingType(actionTypes.REMOVE_POST_FAILURE));
+  }
 };
 
 export const sendRequestToEditPost = post => async dispatch => {
-  dispatch(isRequestPending(true, post.id));
-  await update(post);
-  dispatch(editPost(post));
-  dispatch(isRequestPending(null));
+  try {
+    dispatch(
+      changeRequestStateAccordingType(actionTypes.EDIT_POST_REQUEST, post.id)
+    );
+    await update(post);
+    dispatch(editPost(post));
+    dispatch(changeRequestStateAccordingType(actionTypes.EDIT_POST_SUCCESS));
+  } catch (error) {
+    dispatch(changeRequestStateAccordingType(actionTypes.EDIT_POST_FAILURE));
+  }
 };
 
 export const sendRequestToGetAllPosts = () => async dispatch => {
@@ -32,10 +48,17 @@ export const sendRequestToGetAllPosts = () => async dispatch => {
   dispatch(savePosts(posts));
 };
 
-export const isRequestPending = (isPending, id) => {
+// export const isRequestPending = (isPending, id) => {
+//   return {
+//     type: actionTypes.IS_REQUEST_PENDING,
+//     payload: isPending ? { id, isPending } : null
+//   };
+// };
+
+export const changeRequestStateAccordingType = (type, id) => {
   return {
-    type: actionTypes.IS_REQUEST_PENDING,
-    payload: isPending ? { id, isPending } : null
+    type,
+    payload: id || null
   };
 };
 

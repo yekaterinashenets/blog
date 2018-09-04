@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
   entry: ['babel-polyfill', './src/index.js'],
@@ -31,6 +32,17 @@ module.exports = {
           },
           {
             loader: 'css-loader'
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [
+                autoprefixer({
+                  browsers: ['ie >= 8', 'last 4 version']
+                })
+              ],
+              sourceMap: true
+            }
           },
           {
             loader: 'sass-loader'
