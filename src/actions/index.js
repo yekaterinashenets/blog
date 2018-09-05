@@ -48,13 +48,6 @@ export const sendRequestToGetAllPosts = () => async dispatch => {
   dispatch(savePosts(posts));
 };
 
-// export const isRequestPending = (isPending, id) => {
-//   return {
-//     type: actionTypes.IS_REQUEST_PENDING,
-//     payload: isPending ? { id, isPending } : null
-//   };
-// };
-
 export const changeRequestStateAccordingType = (type, id) => {
   return {
     type,

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Field } from 'redux-form';
 import PropTypes from 'prop-types';
 import PostModel from '../../models/PostModel';
-import IsPendingModel from '../../models/IsPendingModel';
 
 const renderField = ({
   input,
