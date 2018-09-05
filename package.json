@@ -5,10 +5,24 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --mode development --open --hot",
-    "build": "webpack",
+    "start": "better-npm-run start",
+    "build": "better-npm-run build",
     "serve": "http-server ./dist",
     "lint": "eslint ."
+  },
+  "betterScripts": {
+    "start": {
+      "command": "webpack-dev-server --mode development --open --hot",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "build": {
+      "command": "webpack --mode production",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
   },
   "repository": {
     "type": "git",
@@ -41,6 +55,7 @@
     "babel-loader": "^8.0.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-polyfill": "^6.26.0",
+    "better-npm-run": "^0.1.1",
     "css-loader": "^1.0.0",
     "eslint": "^5.4.0",
     "eslint-config-airbnb-base": "^13.1.0",
@@ -51,9 +66,11 @@
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
     "http-server": "^0.11.1",
+    "mini-css-extract-plugin": "^0.4.2",
     "node-sass": "^4.9.3",
     "postcss-loader": "^3.0.0",
     "prettier": "^1.14.2",
+    "redux-devtools-extension": "^2.13.5",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.0",
     "webpack": "^4.17.1",
