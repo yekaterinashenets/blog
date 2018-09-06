@@ -7,12 +7,14 @@ export const sendRequestToAddPost = post => async dispatch => {
     dispatch(changeRequestStateAccordingType(actionTypes.ADD_POST_REQUEST));
     post = {
       ...post,
+      comments: [],
       id: uuidv1()
     };
     await add(post);
     dispatch(savePost(post));
     dispatch(changeRequestStateAccordingType(actionTypes.ADD_POST_SUCCESS));
   } catch (error) {
+    console.log(error);
     dispatch(changeRequestStateAccordingType(actionTypes.ADD_POST_FAILURE));
   }
 };

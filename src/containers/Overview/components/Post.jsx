@@ -4,6 +4,7 @@ import PostModel from '../../../common/models/PostModel';
 import './styles.scss';
 import { EditForm } from '../../../common/components/Form/CustomForm';
 import { Consumer } from '../../../common/contexts/requestContext';
+import Comments from './Comments';
 
 class Post extends Component {
   constructor(props) {
@@ -32,6 +33,16 @@ class Post extends Component {
     this.props.editPost(post);
   };
 
+  addComment = () => {
+    this.input.value &&
+      this.props.addComment({
+        ...this.props.post,
+        comments: [...this.props.post.comments, this.input.value]
+      });
+  };
+
+  getInputref = input => (this.input = input);
+
   render() {
     const { post, isRequestPending, postId } = this.props;
     const { title, text, email, id } = post;
@@ -53,6 +64,12 @@ class Post extends Component {
             submitCallback={this.editPost}
           />
         )}
+        <div>
+          <input type="text" ref={this.getInputref} />
+          <button onClick={this.addComment}>comment</button>
+        </div>
+        {post.comments && <Comments comments={post.comments} />}
+
         {isLoaderVisible && <span>Loading...</span>}
       </div>
     );

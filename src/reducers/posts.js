@@ -30,15 +30,17 @@ const posts = (state = initialState, action) => {
       };
 
     case actionTypes.ADD_POST_REQUEST:
+    case actionTypes.ADD_COMMENT_REQUEST:
     case actionTypes.REMOVE_POST_REQUEST:
     case actionTypes.EDIT_POST_REQUEST:
       return {
         ...state,
         isRequestPending: true,
         isRequestFailed: false,
-        postId: action.payload
+        postId: (action.payload && action.payload.id) || action.payload
       };
     case actionTypes.ADD_POST_SUCCESS:
+    case actionTypes.ADD_COMMENT_SUCCESS:
     case actionTypes.REMOVE_POST_SUCCESS:
     case actionTypes.EDIT_POST_SUCCESS:
       return {
@@ -46,6 +48,7 @@ const posts = (state = initialState, action) => {
         isRequestPending: false
       };
     case actionTypes.ADD_POST_FAILURE:
+    case actionTypes.ADD_COMMENT_FAILURE:
     case actionTypes.REMOVE_POST_FAILURE:
     case actionTypes.EDIT_POST_FAILURE:
       return {
